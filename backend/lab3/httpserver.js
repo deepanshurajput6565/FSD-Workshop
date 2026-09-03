@@ -1,9 +1,10 @@
 import http from 'http'
+import { json } from 'stream/consumers';
 
-const userdata = {
+const userdata =[ {
     name: 'Deepanshu Rajput',
     age: 20
-};
+}];
 
 const server = http.createServer((req, res) => {
     const url = req.url;
@@ -25,16 +26,32 @@ const server = http.createServer((req, res) => {
         const body= " ";
         res.on('data',(Chunk)=>{
             body += Chunk;
-        })
+        });
         res.on("end",()=> {
             const newdata = json.parse(body);
-        })
         
+            const newUserData={
+                name: newdata.name,
+                age: newdata.age
+            };
+            userdata.push(newUserData);
+            res.end('data update succesfull')
+        });
+    }
+    else if(url.startsWith('/users/')&& method === 'GET'){
+        const index = parseInt(url.split('/')[2]);
+        if(index >= 0 && index < userdata.length){
+            res.end(JSON.stringify(userdata[index]));
+        }
+        else {
+            res.statusCode = 404;
+            res.end('user not found');
+        }
     }
     else {
-        res.statusCode = 404;
-        res.end('Page not found');
-    }
+            res.statusCode = 404;
+            res.end('Page not found');
+        }
 });
 
 server.listen(3000, () => {

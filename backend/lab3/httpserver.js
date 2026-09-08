@@ -24,10 +24,10 @@ const server = http.createServer((req, res) => {
     }
     else if(url === '/create' && method === 'POST'){
         const body= " ";
-        res.on('data',(Chunk)=>{
+        req.on('data',(Chunk)=>{
             body += Chunk;
         });
-        res.on("end",()=> {
+        req.on("end",()=> {
             const newdata = json.parse(body);
         
             const newUserData={
@@ -48,11 +48,22 @@ const server = http.createServer((req, res) => {
             res.end('user not found');
         }
     }
+    else if(url.startsWith('/users/')&& method==='DELETE'){
+        const id = parseInt(url.split('/')[2]);
+        const index = userdata.findIndex((u)=> u.id==id);
+        if(index ==-1){
+            res.statusCode = 404;
+            res.end('user not found');
+        }
+        userdata.splice(index,1);
+        res.end("data deleted successfully");
+    }
     else {
             res.statusCode = 404;
             res.end('Page not found');
-        }
+    }    
 });
+
 
 server.listen(3000, () => {
     console.log('Server running on http://localhost:3000');

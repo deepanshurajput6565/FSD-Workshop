@@ -21,8 +21,8 @@ function read (){
 
 
 const newUserData ={
-    name: "Deepak",
-    age: 30,
+    name: "Deepanshu",
+    age: 20,
     
 }
 
@@ -52,5 +52,5 @@ function delete1 () {
 
 createFile();
 read();
-update();
+// update();
 // delete1();

@@ -1,7 +1,7 @@
 //update the data in file and show the updated data using serer and put request in json file
- const http = require('http');
+import http from "http";
 const userdata = [{
-    name:"deepak",
+    name:"deepu",
     email:"sdsd@gmail.com",
     course: "cse"
 }];
